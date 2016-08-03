@@ -1,5 +1,4 @@
 alic occurs 2 times
-wa occurs 2 times
 begin occurs 1 times
 get occurs 1 times
 veri occurs 1 times
@@ -7,9 +6,7 @@ tire occurs 1 times
 sit occurs 1 times
 her occurs 2 times
 sister occurs 2 times
-the occurs 3 times
 bank occurs 1 times
-and occurs 2 times
 have occurs 1 times
 noth occurs 1 times
 do: occurs 1 times
@@ -18,10 +15,8 @@ twice occurs 1 times
 she occurs 1 times
 had occurs 2 times
 peep occurs 1 times
-into occurs 1 times
 book occurs 2 times
 read occurs 1 times
-but occurs 1 times
 pictur occurs 2 times
 convers occurs 2 times
 what occurs 1 times

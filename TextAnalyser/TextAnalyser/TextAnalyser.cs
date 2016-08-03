@@ -18,6 +18,7 @@ namespace TextAnalyser
         {
             myStemmer = new PorterStemmerAlgorithm.PorterStemmer();
             tokenCount = new Dictionary<string,int>();
+            initializeStopWords();
         }
 
         private void initializeStopWords() {
