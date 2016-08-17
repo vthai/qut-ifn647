@@ -89,9 +89,11 @@ namespace LuceneApplication
             myLuceneApp.CreateAnalyser();
             myLuceneApp.CreateWriter();
 
-            string[] strs = new string[] {"The Daily Star", "The Daily Planet", "Daily News", "News of the Day", "New New York New" };
-            for (string str : strings)
-            myLuceneApp.IndexText("The Daily Star");
+            string[] strs = new string[] {"The Daily Star", "The Daily Planet", "Daily News", "News of the Day", "New New York News" };
+            
+            foreach (string str in strs) {
+                myLuceneApp.IndexText(str);
+            }
 
             myLuceneApp.CleanUp();
 
