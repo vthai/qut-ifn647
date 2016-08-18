@@ -45,6 +45,7 @@ namespace LuceneApplication
         {
             // TODO: Enter code to create the Lucene Analyser 
             analyzer = new SimpleAnalyzer();
+            
 
         }
 
