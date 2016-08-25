@@ -17,10 +17,13 @@ namespace LuceneApplication
         Lucene.Net.Store.Directory luceneIndexDirectory;
         Lucene.Net.Analysis.Analyzer analyzer;
         Lucene.Net.Index.IndexWriter writer;
+
         Lucene.Net.Search.IndexSearcher searcher;
         Lucene.Net.QueryParsers.QueryParser parser;
+        TopDocs topDocs;
 
         const Lucene.Net.Util.Version VERSION = Lucene.Net.Util.Version.LUCENE_30;
+
         const string TEXT_FN = "Text";
 
         public LuceneApplication()
@@ -46,8 +49,23 @@ namespace LuceneApplication
         public TopDocs SearchIndex(string query_pa)
         {
             Query query = parser.Parse(query_pa);
+             topDocs = searcher.Search(query, 100);
+            // int i = topDocs.TotalHits;
+            Console.WriteLine("Number of results is " + topDocs.TotalHits);
+            return topDocs;
+        }
 
-            return searcher.Search(query,100);
+        public void DisplayResults(TopDocs topDocs)
+        {
+            int i = 1;
+            foreach (ScoreDoc scoreDoc in topDocs.ScoreDocs)
+            {
+                Document doc = searcher.Doc(scoreDoc.Doc);
+                string myFiledValue = doc.Get(TEXT_FN).ToString();
+                Console.WriteLine("Rank no. "+i+":"+myFiledValue);
+                i++;
+               
+            }
         }
 
         /// <summary>
@@ -109,16 +127,18 @@ namespace LuceneApplication
                 System.Console.WriteLine("Adding " + s + "  to Index");
                 myLuceneApp.IndexText(s);
             }
-
+            
             System.Console.WriteLine("All documents added.");
+
             myLuceneApp.CreateSearcher();
             myLuceneApp.CreateParser();
-            myLuceneApp.CleanUpSearcher();
+            TopDocs topDocs = myLuceneApp.SearchIndex("mad");
+            myLuceneApp.DisplayResults(topDocs);
 
             // clean up
             myLuceneApp.CleanUpIndexer();
+            myLuceneApp.CleanUpSearcher();
 
-            
             System.Console.ReadLine();
  
         
