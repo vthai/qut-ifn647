@@ -62,7 +62,7 @@ namespace LuceneApplication
             {
                 Document doc = searcher.Doc(scoreDoc.Doc);
                 string myFiledValue = doc.Get(TEXT_FN).ToString();
-                Console.WriteLine("Rank no. "+i+":"+myFiledValue);
+                Console.WriteLine("Rank no. "+i+": "+myFiledValue);
                 i++;
                
             }
@@ -132,8 +132,16 @@ namespace LuceneApplication
 
             myLuceneApp.CreateSearcher();
             myLuceneApp.CreateParser();
-            TopDocs topDocs = myLuceneApp.SearchIndex("mad");
-            myLuceneApp.DisplayResults(topDocs);
+            string line = null;
+            do
+            {
+                Console.Write("Input the search term: ");
+                line = Console.ReadLine();
+                TopDocs topDocs = myLuceneApp.SearchIndex(line);
+                myLuceneApp.DisplayResults(topDocs);
+                Console.WriteLine();
+            } while (line != null);
+            
 
             // clean up
             myLuceneApp.CleanUpIndexer();
