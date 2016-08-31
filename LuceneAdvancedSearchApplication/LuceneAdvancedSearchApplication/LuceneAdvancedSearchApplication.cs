@@ -50,11 +50,15 @@ namespace LuceneAdvancedSearchApplication
         /// Indexes a given string into the index
         /// </summary>
         /// <param name="text">The text to index</param>
-        public void IndexText(string text)
+        public void IndexText(string text, float boost)
         {
 
             Lucene.Net.Documents.Field field = new Field(TEXT_FN, text, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES);
             Lucene.Net.Documents.Document doc = new Document();
+            if (boost != -1)
+            {
+                doc.Boost = boost;
+            }
             doc.Add(field);
             writer.AddDocument(doc);
         }
@@ -143,13 +147,14 @@ namespace LuceneAdvancedSearchApplication
             myLuceneApp.CreateIndex(indexPath);
             System.Console.WriteLine("Adding Documents to Index");
             int docID = 0;
+            float[] boostList = { -1, 10.5f, -1, 10, 10 };
             foreach (string s in l)
             {
                 //string ms = s;
                 //ms = ms.ToLower();
                 //ms = ms.Replace(",\'", string.Empty);
                 System.Console.WriteLine("Adding doc " + docID + ". " + s + "  to Index");
-                myLuceneApp.IndexText(s);
+                myLuceneApp.IndexText(s, boostList[docID]);
                 docID++;
             }
             System.Console.WriteLine("All documents added.");
