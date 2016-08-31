@@ -137,9 +137,16 @@ namespace LuceneApplication
             {
                 Console.Write("Input the search term: ");
                 line = Console.ReadLine();
-                TopDocs topDocs = myLuceneApp.SearchIndex(line);
-                myLuceneApp.DisplayResults(topDocs);
-                Console.WriteLine();
+                if (line == "")
+                {
+                    break;
+                }
+                else {
+                    TopDocs topDocs = myLuceneApp.SearchIndex(line);
+                    myLuceneApp.DisplayResults(topDocs);
+                    Console.WriteLine();
+                }
+          
             } while (line != null);
             
 
