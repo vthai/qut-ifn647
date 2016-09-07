@@ -49,7 +49,8 @@ namespace EfficiencyTest
         public void IndexText(string text)
         {
             //Field field = new Field("Text", text, Field.Store.NO, Field.Index.ANALYZED_NO_NORMS, Field.TermVector.NO);
-            Field field = new Field("Text", text, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
+            Field field = new Field("Text", text, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+            //Field field = new Field("Text", text, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
             Document doc = new Document();
             doc.Add(field);
             writer.AddDocument(doc);
@@ -73,13 +74,13 @@ namespace EfficiencyTest
             TestLuceneEfficiency myLuceneApp = new TestLuceneEfficiency();
 
             // TODO: ADD PATHNAME
-            string indexPath = @"./Outcome";
+            string indexPath = @"./Outcome_Norm";
 
             myLuceneApp.CreateIndex(indexPath);
 
             System.Console.WriteLine("Adding Documents to Index");
 
-            int numDocs = 1000;
+            int numDocs = 1000000;
             string text = "A"; 
 
             for (int i = 0; i < numDocs; i++ )
