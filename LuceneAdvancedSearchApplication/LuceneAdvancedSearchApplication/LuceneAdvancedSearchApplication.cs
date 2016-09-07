@@ -24,6 +24,8 @@ namespace LuceneAdvancedSearchApplication
         const Lucene.Net.Util.Version VERSION = Lucene.Net.Util.Version.LUCENE_30;
         const string TEXT_FN = "Text";
 
+        Similarity newSimilarity = new NewSimilarity();
+
 
         public LuceneAdvancedSearchApplication()
         {
@@ -44,17 +46,22 @@ namespace LuceneAdvancedSearchApplication
             luceneIndexDirectory = Lucene.Net.Store.FSDirectory.Open(indexPath);
             IndexWriter.MaxFieldLength mfl = new IndexWriter.MaxFieldLength(IndexWriter.DEFAULT_MAX_FIELD_LENGTH);
             writer = new Lucene.Net.Index.IndexWriter(luceneIndexDirectory, analyzer, true, mfl);
+            writer.SetSimilarity(newSimilarity);
         }
 
         /// <summary>
         /// Indexes a given string into the index
         /// </summary>
         /// <param name="text">The text to index</param>
-        public void IndexText(string text)
+        public void IndexText(string text, float boost)
         {
 
             Lucene.Net.Documents.Field field = new Field(TEXT_FN, text, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES);
             Lucene.Net.Documents.Document doc = new Document();
+            if (boost != -1)
+            {
+                doc.Boost = boost;
+            }
             doc.Add(field);
             writer.AddDocument(doc);
         }
@@ -76,6 +83,7 @@ namespace LuceneAdvancedSearchApplication
         public void CreateSearcher()
         {
             searcher = new IndexSearcher(luceneIndexDirectory);
+            searcher.Similarity = newSimilarity;
         }
 
         /// <summary>
@@ -88,17 +96,24 @@ namespace LuceneAdvancedSearchApplication
             System.Console.WriteLine("Searching for " + querytext);
             querytext = querytext.ToLower();
 
+<<<<<<< HEAD
 
             if (querytext.Equals("mad world"))
             {
 
                 querytext = "mad^2 world";
+=======
+           
+            if (querytext.Equals("mad world")) {
+                
+                //querytext = "mad^1.5 world";
+>>>>>>> 53fa8e34410feb7a9e1ac783eaddc40a97389df5
             }
             Query query = parser.Parse(querytext);
      
 
             TopDocs results = searcher.Search(query, 100);
-            //query.setB
+            
             System.Console.WriteLine("Number of results is " + results.TotalHits);
             int rank = 0;
             foreach (ScoreDoc scoreDoc in results.ScoreDocs)
@@ -107,7 +122,7 @@ namespace LuceneAdvancedSearchApplication
                 Lucene.Net.Documents.Document doc = searcher.Doc(scoreDoc.Doc);
                 string myFieldValue = doc.Get(TEXT_FN).ToString();
                 Explanation explaination = searcher.Explain(query, scoreDoc.Doc);
-                Console.WriteLine("Rank " + rank + " text " + myFieldValue + " score:" + scoreDoc + " explain:" + explaination.ToString());
+                Console.WriteLine("Rank " + rank + ", Score " + scoreDoc.Score + ", Text " + myFieldValue + "\n" + explaination.ToString());
 
             }
 
@@ -143,13 +158,15 @@ namespace LuceneAdvancedSearchApplication
             myLuceneApp.CreateIndex(indexPath);
             System.Console.WriteLine("Adding Documents to Index");
             int docID = 0;
+            //float[] boostList = { -1, 10.5f, -1, 10, 10 };
+            float[] boostList = { -1, -1, -1, -1, -1 };
             foreach (string s in l)
             {
                 //string ms = s;
                 //ms = ms.ToLower();
                 //ms = ms.Replace(",\'", string.Empty);
                 System.Console.WriteLine("Adding doc " + docID + ". " + s + "  to Index");
-                myLuceneApp.IndexText(s);
+                myLuceneApp.IndexText(s, boostList[docID]);
                 docID++;
             }
             System.Console.WriteLine("All documents added.");
@@ -158,7 +175,8 @@ namespace LuceneAdvancedSearchApplication
             // Searching Code
             myLuceneApp.CreateSearcher();
 
-            string[] strs = { "mad", "world", "mad world", "\"mad world\"", "\"mad world\" mad world" };
+            //string[] strs = { "mad", "world", "mad world", "\"mad world\"", "\"mad world\" mad world" };
+            string[] strs = { "mad" };
             foreach (string str in strs)
             {
                 myLuceneApp.SearchText(str);
