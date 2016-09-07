@@ -88,14 +88,14 @@ namespace LuceneAdvancedSearchApplication
             System.Console.WriteLine("Searching for " + querytext);
             querytext = querytext.ToLower();
 
-           
-            if (querytext.Equals("mad world")) {
-                
-                //querytext = "mad world^2";
+
+            if (querytext.Equals("mad world"))
+            {
+
+                querytext = "mad^2 world";
             }
             Query query = parser.Parse(querytext);
-
-            //Weight weight = searcher.CreateWeight(query);
+     
 
             TopDocs results = searcher.Search(query, 100);
             //query.setB

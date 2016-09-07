@@ -130,6 +130,8 @@ namespace LuceneApplication
             
             System.Console.WriteLine("All documents added.");
 
+
+
             myLuceneApp.CreateSearcher();
             myLuceneApp.CreateParser();
             string line = null;
