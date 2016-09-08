@@ -9,6 +9,7 @@ namespace Week7_Challenge
         public List<string> bigrams(string sentence)
         {
             string[] tokens = sentence.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine("There are " + tokens.Length + " tokens in the document");
 
             List<string> bigrams = new List<string>();
 
