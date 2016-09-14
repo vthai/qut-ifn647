@@ -56,39 +56,30 @@ namespace EfficiencyTest
         /// <summary>
         /// Sends the thread to sleep and outputs the sleep time
         /// </summary>
-        public void testSleepEfficiency(string text){
+        public void TestLinguisticProcessingEfficiency(string text){
             //Console.WriteLine("Sending system to sleep...zzzz");
             DateTime start = System.DateTime.Now;
             //System.Threading.Thread.Sleep(millisleep);
-            string[] strs = TestLinguisticProcessEfficiency(text);
+            string[] strs = TokeniseString(text);
             DateTime end = System.DateTime.Now;
-            Console.WriteLine("Time to tokenlise" + (end - start));
+            Console.WriteLine("Time to tokenize: " + (end - start));
 
             DateTime start2 = System.DateTime.Now;
             //System.Threading.Thread.Sleep(millisleep);
-          string[] strsNonStopWords = RemoveStopWords(strs);
+            string[] strsNonStopWords = RemoveStopWords(strs);
             DateTime end2 = System.DateTime.Now;
-            Console.WriteLine("Time to RemoveStopWords" + (end2 - start2));
+            Console.WriteLine("Time to removes stopWords: " + (end2 - start2));
 
             DateTime start3 = System.DateTime.Now;
             //System.Threading.Thread.Sleep(millisleep);
             StemTokens(strsNonStopWords);
             DateTime end3 = System.DateTime.Now;
-            Console.WriteLine("Time to RemoveStopWords" + (end3 - start3));
+            Console.WriteLine("Time to stem: " + (end3 - start3));
 
-        }
-
-        public string[] TestLinguisticProcessEfficiency(string s)
-        {
-            string[] strs = TokeniseString(s);
-            return strs;
-
-            
         }
 
         public string[] TokeniseString(string text)
         {
-            // stub
             text = text.ToLower();
             return text.Split(new char[] { ' '}, StringSplitOptions.RemoveEmptyEntries);
         }
@@ -126,12 +117,24 @@ namespace EfficiencyTest
             return array.ToArray();
         }
 
-
+        /// <summary>
+        /// Sends the thread to sleep and outputs the sleep time
+        /// </summary>
+        public void testSleepEfficiency(int millisleep)
+        {
+            Console.WriteLine("Sending system to sleep...zzzz");
+            DateTime start = System.DateTime.Now;
+            System.Threading.Thread.Sleep(millisleep);
+            DateTime end = System.DateTime.Now;
+            Console.WriteLine("The sleep lasted for " + (end - start) + "\n");
+        }
 
         static void Main(string[] args)
         {
             EfficiencyTest test = new EfficiencyTest();
-            test.testSleepEfficiency(AliceText.Text);
+
+            test.testSleepEfficiency(2000);
+            test.TestLinguisticProcessingEfficiency(AliceText.Text);
             
             Console.ReadLine();
         }

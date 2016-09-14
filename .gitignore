@@ -12,3 +12,7 @@ artifacts/
 
 indexfolder
 indexDir
+*.cfs
+*.cfx
+*.gen
+segements_2
