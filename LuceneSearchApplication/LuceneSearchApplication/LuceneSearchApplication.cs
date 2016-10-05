@@ -130,7 +130,8 @@ namespace LuceneApplication
             
             System.Console.WriteLine("All documents added.");
 
-
+            //clean up
+            myLuceneApp.CleanUpIndexer();
 
             myLuceneApp.CreateSearcher();
             myLuceneApp.CreateParser();
@@ -150,10 +151,10 @@ namespace LuceneApplication
                 }
           
             } while (line != null);
-            
+
 
             // clean up
-            myLuceneApp.CleanUpIndexer();
+            
             myLuceneApp.CleanUpSearcher();
 
             System.Console.ReadLine();
