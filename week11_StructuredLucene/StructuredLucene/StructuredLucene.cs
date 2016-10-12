@@ -68,13 +68,31 @@ namespace StructuredLucene
         /// <param name="author">The Book's author</param>
         /// <param name="title">The Book's title</param>
         /// <param name="publisher">The Book's publisher</param>
-        public void IndexBook(string author, string title, string publisher){
+        /// 
+
+        //public void IndexBook(string author, string title, string publisher){
+        //    // TODO: ADD CODE
+
+        //    Field titleField = new Field(TITLE_FN, title,Field.Store.YES,Field.Index.ANALYZED);
+        //    Field authorField = new Field(AUTHOR_FN, author, Field.Store.YES, Field.Index.ANALYZED);
+        //   // authorField.Boost = 15;
+        //    Field publisherField = new Field(PUBLISHER_FN, publisher, Field.Store.NO, Field.Index.ANALYZED);
+        //    Document doc = new Document();
+        //    doc.Add(titleField);
+        //    doc.Add(authorField);
+        //    doc.Add(publisherField);
+        //    writer.AddDocument(doc);
+        //}
+
+
+        public void IndexBookWithObject(Book book)
+        {
             // TODO: ADD CODE
 
-            Field titleField = new Field(TITLE_FN, title,Field.Store.YES,Field.Index.ANALYZED);
-            Field authorField = new Field(AUTHOR_FN, author, Field.Store.YES, Field.Index.ANALYZED);
-           // authorField.Boost = 15;
-            Field publisherField = new Field(PUBLISHER_FN, publisher, Field.Store.NO, Field.Index.ANALYZED);
+            Field titleField = new Field(TITLE_FN, book.Title, Field.Store.YES, Field.Index.ANALYZED);
+            Field authorField = new Field(AUTHOR_FN, book.Author, Field.Store.YES, Field.Index.ANALYZED);
+            // authorField.Boost = 15;
+            Field publisherField = new Field(PUBLISHER_FN, book.Publisher, Field.Store.NO, Field.Index.ANALYZED);
             Document doc = new Document();
             doc.Add(titleField);
             doc.Add(authorField);
@@ -92,8 +110,9 @@ namespace StructuredLucene
             // parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, PUBLISHER_FN, analyzer);
             IDictionary<string, float> boosts = new Dictionary<string, float>();
             boosts.Add(AUTHOR_FN, 10);
-            //string[] 
-            parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, new string[] { AUTHOR_FN, TITLE_FN }, analyzer, boosts);
+            boosts.Add(TITLE_FN, 1);
+            string[] fields = new string[] { AUTHOR_FN, TITLE_FN };
+            parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, fields, analyzer, boosts);
         }
 
         /// <summary>
@@ -108,6 +127,7 @@ namespace StructuredLucene
         public void SearchAndDisplayResults(string querytext)
         {
             // TODO: ADD CODE
+                
             Query query = parser.Parse(querytext);
             TopDocs  topDocs = searcher.Search(query, 100);
             int i = 0;
@@ -139,11 +159,46 @@ namespace StructuredLucene
             myLuceneApp.CreateIndex(indexPath);
 
             System.Console.WriteLine("Adding documents to the index - Author, Title, Publisher");
-            myLuceneApp.IndexBook(@"James Jones", "Green grass", "Green Books Ltd");
-            myLuceneApp.IndexBook(@"James Jones", "Tomatoes are red", "Black Publishing Inc");
-            myLuceneApp.IndexBook(@"Bob Black", "I'm Black inside", "Black Publishing Inc");
-            myLuceneApp.IndexBook(@"Greg Green", "You say tomatoes, I also say tomatoes", "Green Books Ltd");
-            myLuceneApp.IndexBook(@"Greg Green", "I love green apples for lunch", "Black Publishing Inc");
+            Book book1 = new Book();
+            Book book2 = new Book();
+            Book book3 = new Book();
+            Book book4 = new Book();
+            Book book5 = new Book();
+            book1.Author = "James Jones";
+            book1.Title = "Green grass";
+            book1.Publisher = "Green Books Ltd";
+
+            book2.Author = "James Jones";
+            book2.Title = "Tomatoes are red";
+            book2.Publisher = "Black Publishing Inc";
+
+            book3.Author = "Bob Black";
+            book3.Title = "I'm Black inside";
+            book3.Publisher = "Black Publishing Inc";
+
+            book4.Author = "Greg Green";
+            book4.Title = "You say tomatoes, I also say tomatoes";
+            book4.Publisher = "Green Books Ltd";
+
+            book5.Author = "Greg Green";
+            book5.Title = "I love green apples for lunch";
+            book5.Publisher = "Black Publishing Inc";
+
+
+            //myLuceneApp.IndexBook(@"James Jones", "Green grass", "Green Books Ltd");
+            //myLuceneApp.IndexBook(@"James Jones", "Tomatoes are red", "Black Publishing Inc");
+            //myLuceneApp.IndexBook(@"Bob Black", "I'm Black inside", "Black Publishing Inc");
+            //myLuceneApp.IndexBook(@"Greg Green", "You say tomatoes, I also say tomatoes", "Green Books Ltd");
+            //myLuceneApp.IndexBook(@"Greg Green", "I love green apples for lunch", "Black Publishing Inc");
+            ///
+            myLuceneApp.IndexBookWithObject(book1);
+            myLuceneApp.IndexBookWithObject(book2);
+            myLuceneApp.IndexBookWithObject(book3);
+            myLuceneApp.IndexBookWithObject(book4); 
+            myLuceneApp.IndexBookWithObject(book5);
+
+
+
             System.Console.WriteLine("All documents added.");
 
              myLuceneApp.CleanUpIndexer();
